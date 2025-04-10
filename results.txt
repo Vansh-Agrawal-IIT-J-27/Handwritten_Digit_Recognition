@@ -1,0 +1,8 @@
+KNN Accuracy: 0.9452
+SVM Accuracy: 0.9660
+Decision Tree Accuracy: 0.8796
+PCA + KNN Accuracy: 0.9573
+Naive Bayes Accuracy: 0.5240
+Logistic Regression Accuracy: 0.9093
+Random Forest Accuracy: 0.9675
+LDA Accuracy: 0.8730
