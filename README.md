@@ -1,10 +1,10 @@
-# 🧠 Handwritten Digit Recognition
+# Handwritten Digit Recognition
 
 This project demonstrates handwritten digit recognition using multiple traditional machine learning models applied to the MNIST dataset. We evaluated and compared the performance of each model and visualized results using confusion matrices and accuracy charts.
 
 ---
 
-## 🔧 Setup Instructions
+## Setup Instructions
 
 1. **Clone the Repository**
 ```bash
@@ -26,22 +26,22 @@ All confusion matrices and model accuracy summaries will be saved automatically.
 
 ---
 
-## 🧠 Models Implemented
+## Models Implemented
 
-- ✅ K-Nearest Neighbors (KNN)
-- ✅ Support Vector Machine (SVM)
-- ✅ Decision Tree
-- ✅ PCA + KNN
-- ✅ Naive Bayes
-- ✅ Logistic Regression
-- ✅ Random Forest
-- ✅ Linear Discriminant Analysis (LDA)
+-  K-Nearest Neighbors (KNN)
+-  Support Vector Machine (SVM)
+-  Decision Tree
+-  PCA + KNN
+-  Naive Bayes
+-  Logistic Regression
+-  Random Forest
+-  Linear Discriminant Analysis (LDA)
 
 Each model is evaluated using classification reports and confusion matrices.
 
 ---
 
-## 📊 Evaluation Outputs
+##  Evaluation Outputs
 
 | File                             | Description                              |
 |----------------------------------|------------------------------------------|
@@ -51,7 +51,7 @@ Each model is evaluated using classification reports and confusion matrices.
 
 ---
 
-## 👥 Team Members & Contributions
+##  Team Members & Contributions
 
 | S. No. | Name                  | Contribution                                  |
 |--------|-----------------------|-----------------------------------------------|
@@ -64,7 +64,7 @@ Each model is evaluated using classification reports and confusion matrices.
 
 ---
 
-## 📁 Folder Structure
+##  Folder Structure
 
 ```
 Handwritten_Digit_Recognition/
@@ -105,6 +105,6 @@ Handwritten_Digit_Recognition/
 
 ---
 
-## 📜 License
+##  License
 
 This project is for academic and learning purposes only.
