@@ -518,187 +518,139 @@
     </footer>
 
     <script>
-        // Canvas Drawing Functionality
-        const canvas = document.getElementById('drawing-canvas');
-        const ctx = canvas.getContext('2d');
-        const clearBtn = document.getElementById('clear-btn');
-        const predictBtn = document.getElementById('predict-btn');
-        const predictionResult = document.getElementById('prediction-result');
-        const predictedDigit = document.getElementById('predicted-digit');
-        const predictionConfidence = document.getElementById('prediction-confidence');
-        
-        // Set up canvas
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 15;
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-        
-        // Drawing state
-        let isDrawing = false;
-        let lastX = 0;
-        let lastY = 0;
-        
-        // Drawing event listeners
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mouseout', stopDrawing);
-        
-        // Touch support
-        canvas.addEventListener('touchstart', handleTouch);
-        canvas.addEventListener('touchmove', handleTouchMove);
-        canvas.addEventListener('touchend', stopDrawing);
-        
-        function startDrawing(e) {
-            isDrawing = true;
-            [lastX, lastY] = [e.offsetX, e.offsetY];
-        }
-        
-        function draw(e) {
-            if (!isDrawing) return;
-            ctx.beginPath();
-            ctx.moveTo(lastX, lastY);
-            ctx.lineTo(e.offsetX, e.offsetY);
-            ctx.stroke();
-            [lastX, lastY] = [e.offsetX, e.offsetY];
-        }
-        
-        function stopDrawing() {
-            isDrawing = false;
-        }
-        
-        function handleTouch(e) {
-            e.preventDefault();
-            const touch = e.touches[0];
-            const mouseEvent = new MouseEvent('mousedown', {
-                clientX: touch.clientX,
-                clientY: touch.clientY
-            });
-            canvas.dispatchEvent(mouseEvent);
-        }
-        
-        function handleTouchMove(e) {
-            e.preventDefault();
-            const touch = e.touches[0];
-            const mouseEvent = new MouseEvent('mousemove', {
-                clientX: touch.clientX,
-                clientY: touch.clientY
-            });
-            canvas.dispatchEvent(mouseEvent);
-        }
-        
-        // Clear canvas button
-        clearBtn.addEventListener('click', () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            predictionResult.style.display = 'none';
+    // Canvas Drawing Functionality
+    const canvas = document.getElementById('drawing-canvas');
+    const ctx = canvas.getContext('2d');
+    const clearBtn = document.getElementById('clear-btn');
+    const predictBtn = document.getElementById('predict-btn');
+    const predictionResult = document.getElementById('prediction-result');
+    const predictedDigit = document.getElementById('predicted-digit');
+    const predictionConfidence = document.getElementById('prediction-confidence');
+
+    // Set up canvas
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 15;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    let isDrawing = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+
+    canvas.addEventListener('touchstart', handleTouchStart, false);
+    canvas.addEventListener('touchmove', handleTouchMove, false);
+    canvas.addEventListener('touchend', stopDrawing, false);
+
+    function startDrawing(e) {
+        isDrawing = true;
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+    }
+
+    function draw(e) {
+        if (!isDrawing) return;
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+    }
+
+    function stopDrawing() {
+        isDrawing = false;
+    }
+
+    function handleTouchStart(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        const mouseEvent = new MouseEvent('mousedown', {
+            clientX: touch.clientX - rect.left,
+            clientY: touch.clientY - rect.top
         });
-        
-        // Predict digit (mock implementation)
-        predictBtn.addEventListener('click', () => {
-            // This would normally send the canvas data to a backend for prediction
-            // For this demo, we'll mock a prediction
-            
-            // Get canvas data
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            
-            // Mock prediction (random digit and confidence)
-            // In a real app, this would be an API call to your ML backend
-            setTimeout(() => {
-                const randomDigit = Math.floor(Math.random() * 10);
-                const randomConfidence = (Math.random() * 30 + 70).toFixed(2); // Random confidence between 70-100%
-                
-                // Display prediction
-                predictedDigit.textContent = randomDigit;
-                predictionConfidence.textContent = `${randomConfidence}%`;
-                predictionResult.style.display = 'flex';
-            }, 1000); // Simulate API delay
+        canvas.dispatchEvent(mouseEvent);
+    }
+
+    function handleTouchMove(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        const mouseEvent = new MouseEvent('mousemove', {
+            clientX: touch.clientX - rect.left,
+            clientY: touch.clientY - rect.top
         });
-        
-        // Tab functionality
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Remove active class from all tabs and contents
-                document.querySelectorAll('.tab-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.remove('active');
-                });
-                
-                // Add active class to clicked tab and its content
-                button.classList.add('active');
-                const tabId = `${button.dataset.tab}-tab`;
-                document.getElementById(tabId).classList.add('active');
-            });
+        canvas.dispatchEvent(mouseEvent);
+    }
+
+    // Clear canvas
+    clearBtn.addEventListener('click', () => {
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        predictionResult.style.display = 'none';
+        predictedDigit.textContent = '?';
+        predictionConfidence.textContent = '0%';
+    });
+
+    // Predict using backend
+    predictBtn.addEventListener('click', () => {
+        const imageData = canvas.toDataURL('image/png');
+
+        predictedDigit.textContent = '...';
+        predictionConfidence.textContent = '...';
+        predictionResult.style.display = 'flex';
+
+        fetch('http://localhost:5000/predict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: imageData })
+        })
+        .then(response => response.json())
+        .then(data => {
+            predictedDigit.textContent = data.digit;
+            predictionConfidence.textContent = 'N/A'; // Update later if backend sends it
+        })
+        .catch(error => {
+            console.error('Prediction error:', error);
+            predictedDigit.textContent = '?';
+            predictionConfidence.textContent = 'Error';
         });
-        
-        // Modal functionality
-        function openModal(imgSrc) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImg');
-            
-            modal.style.display = 'block';
-            modalImg.src = imgSrc;
-        }
-        
-        function closeModal() {
-            document.getElementById('imageModal').style.display = 'none';
-        }
-        
-        // Close modal if clicked outside the image
-        window.onclick = function(event) {
-            const modal = document.getElementById('imageModal');
-            if (event.target == modal) {
-                closeModal();
-            }
-        }
-        
-        // Mock functions for footer links
-        function showAbout() {
-            alert("This project was created to compare different machine learning algorithms for handwritten digit recognition using the MNIST dataset.");
-        }
-        
-        function showContact() {
-            alert("For more information, contact: your.email@example.com");
-        }
-        
-        // Simulating loading results from the results.txt file
-        // In a real application, you would fetch this data from your backend
-        function loadResults() {
-            // Mock data based on your results.txt
-            const results = {
-                "KNN": 0.9723,
-                "SVM": 0.9814,
-                "Decision Tree": 0.8631,
-                "PCA + KNN": 0.9685,
-                "Naive Bayes": 0.8434,
-                "Logistic Regression": 0.9142,
-                "Random Forest": 0.9635,
-                "LDA": 0.8795
-            };
-            
-            // Update the accuracy display for each model
-            Object.entries(results).forEach(([model, accuracy]) => {
-                const modelId = model.toLowerCase().replace(/\s+/g, '-').replace('+', '-');
-                const tabContent = document.getElementById(`${modelId}-tab`);
-                
-                if (tabContent) {
-                    // Create or update accuracy display
-                    let accuracyElem = tabContent.querySelector('.model-accuracy');
-                    if (!accuracyElem) {
-                        accuracyElem = document.createElement('div');
-                        accuracyElem.className = 'model-accuracy';
-                        tabContent.querySelector('.model-card').insertBefore(accuracyElem, tabContent.querySelector('.model-card .model-header'));
-                    }
-                    accuracyElem.textContent = `${(accuracy * 100).toFixed(2)}%`;
+    });
+
+    // Load model results (optional feature you had)
+    function loadResults() {
+        const results = {
+            "KNN": 0.9723,
+            "SVM": 0.9814,
+            "Decision Tree": 0.8631,
+            "PCA + KNN": 0.9685,
+            "Naive Bayes": 0.8434,
+            "Logistic Regression": 0.9142,
+            "Random Forest": 0.9635,
+            "LDA": 0.8795
+        };
+
+        Object.entries(results).forEach(([model, accuracy]) => {
+            const modelId = model.toLowerCase().replace(/\s+/g, '-').replace('+', '-');
+            const tabContent = document.getElementById(`${modelId}-tab`);
+
+            if (tabContent) {
+                let accuracyElem = tabContent.querySelector('.model-accuracy');
+                if (!accuracyElem) {
+                    accuracyElem = document.createElement('div');
+                    accuracyElem.className = 'model-accuracy';
+                    tabContent.querySelector('.model-card').insertBefore(accuracyElem, tabContent.querySelector('.model-card .model-header'));
                 }
-            });
-        }
-        
-        // Load results when the page loads
-        window.addEventListener('load', loadResults);
-    </script>
+                accuracyElem.textContent = `${(accuracy * 100).toFixed(2)}%`;
+            }
+        });
+    }
+
+    window.addEventListener('load', loadResults);
+</script>
 </body>
 </html>
