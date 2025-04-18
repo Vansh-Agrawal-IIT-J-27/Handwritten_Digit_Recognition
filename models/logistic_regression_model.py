@@ -10,7 +10,7 @@ class LogisticRegressionModel:
         )
 
     def train(self, X_train, y_train):
-        print("📚 Training Logistic Regression model on 10k samples...")
+        print("Training Logistic Regression model on 10k samples...")
         # Limit data to 10k samples to avoid long training time
         X_small = X_train[:10000]
         y_small = y_train[:10000]
@@ -22,6 +22,6 @@ class LogisticRegressionModel:
         acc = accuracy_score(y_test, y_pred)
         cm = confusion_matrix(y_test, y_pred)
         report = classification_report(y_test, y_pred)
-        print(f"✅ Accuracy: {acc:.4f}")
-        print("📊 Classification Report:\n", report)
+        print(f" Accuracy: {acc:.4f}")
+        print(" Classification Report:\n", report)
         return acc, cm, report
