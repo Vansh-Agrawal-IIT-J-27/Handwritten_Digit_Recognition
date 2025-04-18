@@ -142,6 +142,8 @@ if __name__ == "__main__":
     plot_accuracy_comparison(model_names, accuracies)
     print("📈 Accuracy comparison plot saved as accuracy_comparison.png")
 
+    joblib.dump(svm_model, 'model/svm_model.pkl')
+
     print("✅ All tasks completed successfully!")
     print("🔚 End of script.")
     print("======================================")
